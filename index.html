@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Multirregistro de Estudios Clínicos</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Header Bar -->
+    <header class="header-bar">
+      <div class="brand-section">
+        <div class="brand-icon">GIC</div>
+        <div class="brand-titles">
+          <h1>Dashboard Multirregistro de Estudios Clínicos</h1>
+          <p>Plataforma Global de Análisis Normativo e Inteligencia de Ensayos Clínicos</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="badge-counter">
+          <span id="filtered-count-badge">0 / 0</span> Estudios Filtrados
+        </div>
+        <button id="btn-export-csv" class="btn-action">
+          Exportar a CSV
+        </button>
+      </div>
+    </header>
+
+    <!-- Multi-Registry Navigation Bar (Top Tabs) -->
+    <nav class="registry-nav-bar" id="registry-nav-bar">
+      <div class="registry-tab active" data-registry="invima">
+        <div>
+          <div class="registry-tab-title">INVIMA Colombia</div>
+          <div class="registry-tab-subtitle">Registro Nacional Colombia</div>
+        </div>
+        <div class="registry-tab-badge">1,150</div>
+      </div>
+      <div class="registry-tab" data-registry="clinicaltrials">
+        <div>
+          <div class="registry-tab-title">ClinicalTrials.gov</div>
+          <div class="registry-tab-subtitle">Registro Global (NIH/EEUU)</div>
+        </div>
+        <div class="registry-tab-badge">1,000</div>
+      </div>
+      <div class="registry-tab" data-registry="euctr">
+        <div>
+          <div class="registry-tab-title">EU Clinical Trials</div>
+          <div class="registry-tab-subtitle">Registro Europeo (EMA)</div>
+        </div>
+        <div class="registry-tab-badge">500</div>
+      </div>
+      <div class="registry-tab" data-registry="anvisa">
+        <div>
+          <div class="registry-tab-title">ANVISA Brasil</div>
+          <div class="registry-tab-subtitle">Registro Nacional Brasil</div>
+        </div>
+        <div class="registry-tab-badge">4,669</div>
+      </div>
+      <div class="registry-tab" data-registry="cofepris">
+        <div>
+          <div class="registry-tab-title">COFEPRIS México</div>
+          <div class="registry-tab-subtitle">Registro Nacional México</div>
+        </div>
+        <div class="registry-tab-badge">5,568</div>
+      </div>
+      <div class="registry-tab" data-registry="paho">
+        <div>
+          <div class="registry-tab-title">OPS / PAHO Américas</div>
+          <div class="registry-tab-subtitle">Portal OMS/ICTRP</div>
+        </div>
+        <div class="registry-tab-badge">214</div>
+      </div>
+      <div class="registry-tab" data-registry="rec_gaico">
+        <div>
+          <div class="registry-tab-title">REC GAICO</div>
+          <div class="registry-tab-subtitle">Registro ANMAT / REC</div>
+        </div>
+        <div class="registry-tab-badge">421</div>
+      </div>
+      <div class="registry-tab" data-registry="anmat">
+        <div>
+          <div class="registry-tab-title">ANMAT Argentina</div>
+          <div class="registry-tab-subtitle">Base de Datos Farmacología</div>
+        </div>
+        <div class="registry-tab-badge">1,862</div>
+      </div>
+    </nav>
+
+    <!-- Two-column Layout -->
+    <div class="main-content">
+      
+      <!-- Sidebar Filters -->
+      <aside class="filters-sidebar">
+        <div class="filters-header">
+          <h2 id="filters-header-title">Filtros (INVIMA)</h2>
+          <button id="btn-clear-filters" class="btn-clear">Limpiar Todos</button>
+        </div>
+        
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="filter-specialty">Especialidad Médica / Condición</label>
+            <select id="filter-specialty" class="filter-control">
+              <option value="all">Todas las Especialidades</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-sponsor">Patrocinador / CRO</label>
+            <select id="filter-sponsor" class="filter-control">
+              <option value="all">Todos los Patrocinadores</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-status">Estado Operativo</label>
+            <select id="filter-status" class="filter-control">
+              <option value="all">Todos los Estados</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-phase">Fase Clínica</label>
+            <select id="filter-phase" class="filter-control">
+              <option value="all">Todas las Fases</option>
+            </select>
+          </div>
+          <div class="filter-group" style="margin-top: 10px;">
+            <label for="search-input">Búsqueda General</label>
+            <input type="text" id="search-input" class="filter-control" placeholder="Buscar por título, ID...">
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="content-area">
+        
+        <!-- KPI Metrics -->
+        <section class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-blue">TOT</div>
+            <div class="kpi-info">
+              <h3>Estudios Totales</h3>
+              <div class="kpi-value" id="kpi-total">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-green">ACT</div>
+            <div class="kpi-info">
+              <h3>Estudios Activos</h3>
+              <div class="kpi-value" id="kpi-active">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-purple">CRO</div>
+            <div class="kpi-info">
+              <h3>Sponsors / CROs</h3>
+              <div class="kpi-value" id="kpi-sponsors">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-amber">ESP</div>
+            <div class="kpi-info">
+              <h3>Especialidades</h3>
+              <div class="kpi-value" id="kpi-specialties">0</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Expanded Statistics Panel (Hidden by default) -->
+        <section class="expanded-stats-panel" id="expanded-stats-panel">
+          <div class="expanded-header">
+            Estadísticas Expandidas: <span id="expanded-specialty-name">Ninguna</span>
+          </div>
+          <div class="expanded-grid">
+            <div class="expanded-item">
+              <h4>Top Patrocinadores en esta Área</h4>
+              <ul class="top-list" id="expanded-top-sponsors">
+                <li><span>Ninguno</span><span>0</span></li>
+              </ul>
+            </div>
+            <div class="expanded-item">
+              <h4>Fases Clínicas</h4>
+              <ul class="top-list" id="expanded-top-phases">
+                <li><span>Ninguno</span><span>0</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts Grid -->
+        <section class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Distribución por Estado Operativo</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-status"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Distribución por Fase</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-phase"></canvas>
+            </div>
+          </div>
+          <div class="chart-card chart-wide">
+            <div class="chart-header">
+              <h3 id="chart-specialties-title">Especialidades Médicas</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-specialties"></canvas>
+            </div>
+          </div>
+          <div class="chart-card chart-wide">
+            <div class="chart-header">
+              <h3>Top 10 Patrocinadores</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-sponsors"></canvas>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Data Table Section -->
+        <section class="table-section">
+          <div class="table-header-controls">
+            <div class="table-title">
+              <h3 id="table-header-title">Tabla de Estudios y Desglose</h3>
+              <p>Haz clic en cualquier fila para inspeccionar las variables normativas.</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <label style="font-size: 0.85rem; color: var(--text-muted);">Filas por página:</label>
+              <select id="select-page-size" class="filter-control" style="width: auto;">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="999999">Todos</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="studies-table">
+              <thead>
+                <tr>
+                  <th data-sort="radicado">Radicado / ID</th>
+                  <th data-sort="fecha_radicacion">Fecha / Año</th>
+                  <th data-sort="titulo">Nombre del Estudio</th>
+                  <th data-sort="patrocinador_cro">Patrocinador / CRO</th>
+                  <th data-sort="especialidades">Especialidad</th>
+                  <th data-sort="fase_tabla" style="min-width: 120px; white-space: nowrap;">Fase</th>
+                  <th data-sort="estado_operativo">Estado</th>
+                  <th style="text-align: center;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Dynamic rows -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="pagination-bar">
+            <div class="pagination-info" id="pagination-text">Mostrando 0 - 0 de 0</div>
+            <div class="pagination-buttons" id="pagination-buttons">
+              <!-- Page numbers -->
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div> <!-- End Main Content -->
+
+  </div> <!-- End App Container -->
+
+  <!-- 13 Regulatory Variables Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-drawer">
+      <div class="modal-header">
+        <div>
+          <span class="badge-fase" id="modal-fase-badge" style="margin-bottom: 8px; display: inline-block;">Fase -</span>
+          <h2 id="modal-study-title">Título del Estudio</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">ID Protocolo: <span id="modal-radicado-text" style="color: var(--accent-primary); font-weight: 600;">-</span></p>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="variable-section-title" id="modal-section-title">
+          Desglose Exhaustivo de Variables
+        </div>
+        <div class="variables-grid">
+          <div class="variable-card">
+            <div class="variable-label">1. Radicado / Protocolo</div>
+            <div class="variable-value" id="var-radicado">-</div>
+          </div>
+          <div class="variable-card full-width">
+            <div class="variable-label">2. Título Completo</div>
+            <div class="variable-value" id="var-titulo">-</div>
+          </div>
+          <div class="variable-card full-width">
+            <div class="variable-label">3. Acta / Disposición</div>
+            <div class="variable-value" id="var-acta">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">4. Estado Operativo</div>
+            <div class="variable-value" id="var-estado-operativo">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">5. Concepto Regulatorio</div>
+            <div class="variable-value" id="var-concepto-regulatorio">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">6. Número Acto Administrativo</div>
+            <div class="variable-value" id="var-acto-admin">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">7. Fecha de Radicación / Inicio</div>
+            <div class="variable-value" id="var-fecha-radicacion">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">8. Fecha de Acto</div>
+            <div class="variable-value" id="var-fecha-acto">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">9. Especialidades Médicas</div>
+            <div class="variable-value" id="var-especialidades">-</div>
+          </div>
+          <div class="variable-card full-width">
+            <div class="variable-label">10. Patrocinador / CRO</div>
+            <div class="variable-value" id="var-patrocinador">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">11. ID Registro Primario</div>
+            <div class="variable-value" id="var-nct-id">-</div>
+          </div>
+          <div class="variable-card">
+            <div class="variable-label">12. Enlace Registro</div>
+            <div class="variable-value" id="var-enlace-registro">-</div>
+          </div>
+          <div class="variable-card full-width">
+            <div class="variable-label">13. Palabras Clave</div>
+            <div class="variable-value" id="var-palabra-clave">-</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px; padding: 14px; background: #f0f9ff; border-radius: var(--radius-sm); border: 1px solid #bae6fd;">
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Enlace a Ficha Oficial:</div>
+          <div id="var-official-url" style="margin-top: 4px; font-weight: 600;">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="dataset.js"></script>
+  <script src="clinicaltrials_gov.js"></script>
+  <script src="eu_clinicaltrials.js"></script>
+  <script src="anvisa_brasil.js"></script>
+  <script src="cofepris_mexico.js"></script>
+  <script src="paho_americas.js"></script>
+  <script src="rec_gaico.js"></script>
+  <script src="anmat_argentina.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
