@@ -228,20 +228,16 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   color: #fff;
 }
 
-/* Two-column Main Layout */
+/* Vertical Main Layout */
 .main-content {
   display: flex;
+  flex-direction: column;
   gap: 24px;
-  align-items: flex-start;
 }
 
-@media (max-width: 1024px) {
-  .main-content { flex-direction: column; }
-}
-
-/* Sidebar Filters */
+/* Top Filters */
 .filters-sidebar {
-  flex: 0 0 320px;
+  width: 100%;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -249,12 +245,14 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   box-shadow: var(--shadow-md);
   position: sticky;
   top: 24px;
+  z-index: 10;
 }
 
 .filters-header {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-color);
@@ -275,20 +273,24 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
-  width: 100%;
+  width: auto;
 }
 .btn-clear:hover { background: #e5e7eb; color: var(--text-main); }
 
 .filters-grid {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 20px;
+  align-items: flex-end;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .filter-group label {
@@ -445,7 +447,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 .chart-header { margin-bottom: 16px; }
 .chart-header h3 { font-size: 1rem; color: var(--text-main); }
-.chart-container { position: relative; height: 260px; width: 100%; }
+.chart-container { position: relative; height: 350px; width: 100%; }
 
 /* Table Section */
 .table-section {

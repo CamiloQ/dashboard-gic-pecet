@@ -516,8 +516,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
-    const labels = sorted.map(t => t[0]);
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    const labels = sorted.map(t => t[0].length > 35 ? t[0].substring(0, 32) + '...' : t[0]);
     const data = sorted.map(t => t[1]);
 
     if (chartSpecialtiesInstance) chartSpecialtiesInstance.destroy();
