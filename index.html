@@ -20,6 +20,9 @@
         </div>
       </div>
       <div class="header-actions">
+        <div class="global-search-container">
+          <input type="text" id="search-input" class="filter-control search-global" placeholder="Buscador global...">
+        </div>
         <div class="badge-counter">
           <span id="filtered-count-badge">0 / 0</span> Estudios Filtrados
         </div>
@@ -66,6 +69,13 @@
         </div>
         <div class="registry-tab-badge">5,568</div>
       </div>
+      <div class="registry-tab" data-registry="anmat">
+        <div>
+          <div class="registry-tab-title">ANMAT Argentina</div>
+          <div class="registry-tab-subtitle">Base de Datos Farmacología</div>
+        </div>
+        <div class="registry-tab-badge">1,862</div>
+      </div>
       <div class="registry-tab" data-registry="paho">
         <div>
           <div class="registry-tab-title">OPS / PAHO Américas</div>
@@ -79,13 +89,6 @@
           <div class="registry-tab-subtitle">Registro ANMAT / REC</div>
         </div>
         <div class="registry-tab-badge">421</div>
-      </div>
-      <div class="registry-tab" data-registry="anmat">
-        <div>
-          <div class="registry-tab-title">ANMAT Argentina</div>
-          <div class="registry-tab-subtitle">Base de Datos Farmacología</div>
-        </div>
-        <div class="registry-tab-badge">1,862</div>
       </div>
     </nav>
 
@@ -124,9 +127,12 @@
               <option value="all">Todas las Fases</option>
             </select>
           </div>
-          <div class="filter-group" style="margin-top: 10px;">
-            <label for="search-input">Búsqueda General</label>
-            <input type="text" id="search-input" class="filter-control" placeholder="Buscar por título, ID...">
+          <div class="filter-group">
+            <label for="filter-year">Año de Radicación</label>
+            <select id="filter-year" class="filter-control">
+              <option value="all">Todos los Años</option>
+            </select>
+          </div>
           </div>
         </div>
       </aside>
@@ -356,7 +362,7 @@
   </div>
 
   <script src="dataset.js"></script>
-  <script src="clinicaltrials_gov.js"></script>
+  <script src="clinicaltrials_gov.js?v=2"></script>
   <script src="eu_clinicaltrials.js"></script>
   <script src="anvisa_brasil.js"></script>
   <script src="cofepris_mexico.js"></script>

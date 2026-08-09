@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterSponsor = document.getElementById('filter-sponsor');
   const filterStatus = document.getElementById('filter-status');
   const filterPhase = document.getElementById('filter-phase');
+  const filterYear = document.getElementById('filter-year');
   const searchInput = document.getElementById('search-input');
 
   const btnClearFilters = document.getElementById('btn-clear-filters');
@@ -115,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     filterSponsor.value = 'all';
     filterStatus.value = 'all';
     filterPhase.value = 'all';
+    filterYear.value = 'all';
     searchInput.value = '';
 
     // Update Section Titles dynamically
@@ -128,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     populateFilterOptions();
     sortFilteredStudies();
     updateDashboard();
+    // Update global search badges
+    updateGlobalBadges();
   }
 
   // Multi-Registry Tab Handler
@@ -140,10 +144,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
         activeRegistryKey = regKey;
         currentPage = 1;
+        
+        // Preserve global search query when switching tabs
+        const currentQuery = searchInput.value;
         initRegistryData();
+        searchInput.value = currentQuery;
+        if (currentQuery) {
+          applyFilters();
+        }
       }
     });
   });
+
+  function updateGlobalBadges(query = '') {
+    const q = query.toLowerCase().trim();
+    registryTabs.forEach(tab => {
+      const regKey = tab.getAttribute('data-registry');
+      const regData = registryMap[regKey]?.data || [];
+      const badge = tab.querySelector('.registry-tab-badge');
+      if (!badge) return;
+
+      if (!q) {
+        badge.textContent = regData.length.toLocaleString();
+        return;
+      }
+
+      const count = regData.filter(s => {
+        const title = (s.titulo || '').toLowerCase();
+        const radicado = (s.radicado || '').toLowerCase();
+        const nct = (s.nct_id || '').toLowerCase();
+        const kw = (s.palabra_clave || '').toLowerCase();
+        const sponsor = (s.patrocinador_cro || s.patrocinador_tabla || '').toLowerCase();
+
+        return title.includes(q) || radicado.includes(q) || nct.includes(q) || kw.includes(q) || sponsor.includes(q);
+      }).length;
+
+      badge.textContent = count.toLocaleString();
+    });
+  }
 
   // Populate Filter Dropdowns per Selected Registry
   function populateFilterOptions() {
@@ -151,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sponsorsMap = {};
     const statusMap = {};
     const phaseMap = {};
+    const yearMap = {};
 
     rawStudies.forEach(s => {
       // Specialty
@@ -171,6 +210,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // Phase
       const ph = s.fase_tabla || '-';
       phaseMap[ph] = (phaseMap[ph] || 0) + 1;
+
+      // Year
+      const rawDate = s.fecha_radicacion || s.fecha_acto_administrativo || '';
+      let year = 'Desconocido';
+      const yearMatch = rawDate.match(/\b(19|20)\d{2}\b/);
+      if (yearMatch) {
+        year = yearMatch[0];
+      }
+      yearMap[year] = (yearMap[year] || 0) + 1;
     });
 
     // Populate Selects
@@ -178,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     populateSelect(filterSponsor, sponsorsMap, 'Todos los Patrocinadores / CROs');
     populateSelect(filterStatus, statusMap, 'Todos los Estados Operativos');
     populateSelect(filterPhase, phaseMap, 'Todas las Fases');
+    populateSelect(filterYear, yearMap, 'Todos los Años');
   }
 
   function populateSelect(selectEl, dataMap, defaultText) {
@@ -194,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Setup Global Event Listeners
   function setupEventListeners() {
-    [filterSpecialty, filterSponsor, filterStatus, filterPhase].forEach(el => {
+    [filterSpecialty, filterSponsor, filterStatus, filterPhase, filterYear].forEach(el => {
       el.addEventListener('change', () => {
         currentPage = 1;
         applyFilters();
@@ -204,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', debounce(() => {
       currentPage = 1;
       applyFilters();
+      updateGlobalBadges(searchInput.value);
     }, 250));
 
     btnClearFilters.addEventListener('click', () => {
@@ -211,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filterSponsor.value = 'all';
       filterStatus.value = 'all';
       filterPhase.value = 'all';
+      filterYear.value = 'all';
       searchInput.value = '';
       currentPage = 1;
       applyFilters();
@@ -252,12 +303,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const selSponsor = filterSponsor.value;
     const selStatus = filterStatus.value;
     const selPhase = filterPhase.value;
+    const selYear = filterYear.value;
     const query = searchInput.value.toLowerCase().trim();
 
     filteredStudies = rawStudies.filter(s => {
       // Date Filter: <= 2026
-      const currentYear = parseInt((s.fecha_radicacion || s.año || '').toString().substring(0, 4)) || 0;
-      if (currentYear > 2026) return false;
+      const currentYearNum = parseInt((s.fecha_radicacion || s.año || '').toString().substring(0, 4)) || 0;
+      if (currentYearNum > 2026) return false;
+
+      if (selYear !== 'all') {
+        const rawDate = s.fecha_radicacion || s.fecha_acto_administrativo || '';
+        let extractedYear = 'Desconocido';
+        const yearMatch = rawDate.match(/\b(19|20)\d{2}\b/);
+        if (yearMatch) extractedYear = yearMatch[0];
+        if (extractedYear !== selYear) return false;
+      }
+
       // Specialty Filter
       if (selEsp !== 'all') {
         const esp = (s.especialidades || '').toLowerCase();

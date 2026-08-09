@@ -2,18 +2,22 @@ import requests
 import json
 import time
 
-def fetch_clinicaltrials_gov(max_records=1000):
+def fetch_clinicaltrials_gov(max_records=500000):
     print("=== Step 1: Fetching Studies from ClinicalTrials.gov API v2 ===")
     base_url = "https://clinicaltrials.gov/api/v2/studies"
     page_token = None
     all_studies = []
     
     headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    # query.cond = Pain OR Tropical Medicine OR Infectious Diseases OR Internal Medicine OR Dermatology OR Neurology OR Pediatric Neurology OR Nutrition OR Psychology OR Allergy
+    condition_query = "Pain OR Tropical Medicine OR Infectious Diseases OR Internal Medicine OR Dermatology OR Neurology OR Pediatric Neurology OR Nutrition OR Psychology OR Allergy"
 
     while len(all_studies) < max_records:
         params = {
-            'pageSize': 100,
-            'format': 'json'
+            'pageSize': 1000,
+            'format': 'json',
+            'query.cond': condition_query
         }
         if page_token:
             params['pageToken'] = page_token
@@ -94,13 +98,13 @@ def fetch_clinicaltrials_gov(max_records=1000):
     print(f"\nTotal ClinicalTrials.gov studies collected: {len(all_studies)}")
 
     # Save JSON
-    json_path = "/home/camilo-q/.gemini/antigravity/scratch/invima-dashboard/clinicaltrials_gov.json"
+    json_path = "clinicaltrials_gov.json"
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(all_studies, f, ensure_ascii=False, indent=2)
     print(f"Saved JSON to {json_path}")
 
     # Save JS bundle
-    js_path = "/home/camilo-q/.gemini/antigravity/scratch/invima-dashboard/clinicaltrials_gov.js"
+    js_path = "clinicaltrials_gov.js"
     with open(js_path, 'w', encoding='utf-8') as f:
         f.write("window.CLINICALTRIALS_GOV_DATASET = ")
         json.dump(all_studies, f, ensure_ascii=False)
@@ -108,4 +112,4 @@ def fetch_clinicaltrials_gov(max_records=1000):
     print(f"Saved JS bundle to {js_path}")
 
 if __name__ == '__main__':
-    fetch_clinicaltrials_gov(1000)
+    fetch_clinicaltrials_gov()

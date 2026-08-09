@@ -139,6 +139,17 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
 }
 
+.global-search-container {
+  width: 300px;
+}
+.search-global {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
 /* Registry Nav Bar (Tabs) */
 .registry-nav-bar {
   display: flex;
