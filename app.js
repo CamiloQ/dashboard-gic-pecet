@@ -490,8 +490,13 @@ document.addEventListener('DOMContentLoaded', () => {
         labels: labels,
         datasets: [{
           data: data,
-          backgroundColor: ['#34d399', '#c084fc', '#fb7185', '#818cf8', '#fbbf24', '#f472b6'],
-          borderWidth: 0
+          backgroundColor: [
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+            '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1',
+            '#14b8a6', '#d946ef', '#eab308', '#f43f5e', '#0ea5e9',
+            '#22c55e', '#a855f7', '#facc15', '#fb923c', '#2dd4bf'
+          ],
+          borderWidth: 1
         }]
       },
       options: {
@@ -608,8 +613,13 @@ document.addEventListener('DOMContentLoaded', () => {
         labels: labels,
         datasets: [{
           data: data,
-          backgroundColor: ['#818cf8', '#34d399', '#fbbf24', '#f472b6', '#c084fc', '#fb7185'],
-          borderWidth: 0
+          backgroundColor: [
+            '#8b5cf6', '#06b6d4', '#f59e0b', '#ec4899', '#10b981',
+            '#3b82f6', '#f97316', '#ef4444', '#84cc16', '#6366f1',
+            '#d946ef', '#14b8a6', '#f43f5e', '#eab308', '#0ea5e9',
+            '#a855f7', '#22c55e', '#fb923c', '#facc15', '#2dd4bf'
+          ],
+          borderWidth: 1
         }]
       },
       options: {
