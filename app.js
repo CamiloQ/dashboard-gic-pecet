@@ -47,7 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     oms: {
       name: 'OMS Global',
       subtitle: 'Base de datos ICTRP (>=2012)',
-      data: window.OMS_DATASET || []
+      data: [
+        ...(window.OMS_PART1 || []),
+        ...(window.OMS_PART2 || []),
+        ...(window.OMS_PART3 || []),
+        ...(window.OMS_PART4 || [])
+      ]
     }
   };
 
