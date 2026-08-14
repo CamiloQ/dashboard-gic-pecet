@@ -478,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSpecialtiesChart();
     renderSponsorsChart();
     renderPhaseChart();
+    renderCountriesTable();
   }
 
   function renderStatusChart() {
@@ -518,6 +519,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  function renderCountriesTable() {
+    const listEl = document.getElementById('global-countries');
+    if (!listEl) return;
+    
+    const countryCounts = {};
+    filteredStudies.forEach(s => {
+      const c = s.pais_origen || s.country || '';
+      if (!c) return;
+      
+      const countries = c.split(/[,;]/).map(x => x.trim()).filter(x => x);
+      countries.forEach(country => {
+        countryCounts[country] = (countryCounts[country] || 0) + 1;
+      });
+    });
+    
+    const sortedCountries = Object.entries(countryCounts)
+      .sort((a, b) => b[1] - a[1]);
+      
+    listEl.innerHTML = sortedCountries.length > 0
+      ? sortedCountries.map(c => `<li><span>${escapeHtml(c[0])}</span><span style="font-weight:600; color:var(--accent-primary);">${c[1].toLocaleString()}</span></li>`).join('')
+      : `<li><span>Ninguno</span><span>0</span></li>`;
+  }
+
 
   function renderSpecialtiesChart() {
     const ctx = document.getElementById('chart-specialties').getContext('2d');
