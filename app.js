@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'ANMAT Argentina',
       subtitle: 'Base de Datos de Estudios de Farmacología Clínica',
       data: window.ANMAT_ARGENTINA_DATASET || []
+    },
+    oms: {
+      name: 'OMS Global',
+      subtitle: 'Base de datos ICTRP (>=2012)',
+      data: window.OMS_DATASET || []
     }
   };
 

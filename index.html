@@ -48,6 +48,13 @@
         </div>
         <div class="registry-tab-badge">1,000</div>
       </div>
+      <div class="registry-tab" data-registry="oms">
+        <div>
+          <div class="registry-tab-title">OMS Global</div>
+          <div class="registry-tab-subtitle">Base de datos ICTRP (>=2012)</div>
+        </div>
+        <div class="registry-tab-badge">Cargando...</div>
+      </div>
       <div class="registry-tab" data-registry="euctr">
         <div>
           <div class="registry-tab-title">EU Clinical Trials</div>
@@ -90,6 +97,7 @@
         </div>
         <div class="registry-tab-badge">421</div>
       </div>
+
     </nav>
 
     <!-- Two-column Layout -->
@@ -241,10 +249,10 @@
               <label style="font-size: 0.85rem; color: var(--text-muted);">Filas por página:</label>
               <select id="select-page-size" class="filter-control" style="width: auto;">
                 <option value="10">10</option>
-                <option value="25" selected>25</option>
+                <option value="25">25</option>
                 <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="999999">Todos</option>
+                <option value="100" selected>100</option>
+                <option value="250">250</option>
               </select>
             </div>
           </div>
@@ -369,7 +377,8 @@
   <script src="paho_americas.js"></script>
   <script src="rec_gaico.js"></script>
   <script src="anmat_argentina.js"></script>
+  <script src="../oms.js"></script>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
