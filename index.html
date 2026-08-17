@@ -10,6 +10,16 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="styles.css?v=5">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Force unregister any lingering service workers from previous Evidence.dev deployment
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="app-container">
@@ -400,6 +410,6 @@
     </div>
   </div>
 
-  <script type="module" src="app.js?v=10"></script>
+  <script type="module" src="app.js?v=11"></script>
 </body>
 </html>
