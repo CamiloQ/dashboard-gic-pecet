@@ -182,13 +182,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           await duckdbEngine.registerFileURL(pf, parquetUrl, 4, false);
         }
 
-        // Build query: single file or multi-file read_parquet
+        // Optimize memory by selecting only strictly necessary columns
+        const isMobile = window.innerWidth <= 768;
+        const columns = "radicado, nct_id, titulo, estado_operativo, estado_tabla, fase_tabla, patrocinador_cro, patrocinador_tabla, especialidades, fecha_radicacion, fecha_acto_administrativo, palabra_clave, pais_origen, enlace_registro_primario, full_url, concepto_regulatorio, acta, numero_acto_administrativo";
+        
         let query;
         if (parquetFiles.length === 1) {
           query = `SELECT * FROM '${parquetFiles[0]}'`;
         } else {
           const fileList = parquetFiles.map(f => `'${f}'`).join(', ');
-          query = `SELECT * FROM read_parquet([${fileList}])`;
+          // Only apply strict column selection and mobile limits for massive multi-part files (like ClinicalTrials)
+          const limitClause = (isMobile && parquetFiles.length > 2) ? 'LIMIT 100000' : '';
+          query = `SELECT ${columns} FROM read_parquet([${fileList}]) ${limitClause}`;
         }
 
         const res = await duckdbConn.query(query);
