@@ -2,7 +2,8 @@ clinicaltrials_gov.json
 IctrpResults.csv
 *.csv
 *.xls
-/*.parquet
 rebec_brasil*
 node_modules/
 dist/
+evidence-dashboard/node_modules/
+evidence-dashboard/.evidence/
