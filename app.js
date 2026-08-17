@@ -90,6 +90,25 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingOverlay.classList.remove('active');
   }
 
+  const CDN_BASE_URL = 'https://cdn.jsdelivr.net/gh/CamiloQ/dashboard-gic-pecet@main/data/';
+
+  async function fetchJsonFile(filename) {
+    const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const primaryUrl = isLocal ? `data/${filename}` : `${CDN_BASE_URL}${filename}`;
+    const fallbackUrl = `data/${filename}`;
+
+    try {
+      const res = await fetch(primaryUrl);
+      if (res.ok) return await res.json();
+      throw new Error(`HTTP ${res.status}`);
+    } catch (err) {
+      console.warn(`Aviso: Falló origen (${primaryUrl}), intentando fallback local (${fallbackUrl})...`, err);
+      const fallbackRes = await fetch(fallbackUrl);
+      if (!fallbackRes.ok) throw new Error(`HTTP ${fallbackRes.status} al cargar ${fallbackUrl}`);
+      return await fallbackRes.json();
+    }
+  }
+
   // Fetch Dataset On-Demand
   async function ensureRegistryLoaded(regKey) {
     const reg = registryMap[regKey];
@@ -99,15 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return reg.data;
     }
 
-    showLoading(`Cargando ${reg.name}...`, `Obteniendo ${reg.files.length} archivo(s) JSON (${reg.subtitle})`);
+    showLoading(`Cargando ${reg.name}...`, `Obteniendo ${reg.files.length} archivo(s) JSON vía CDN jsDelivr`);
 
     try {
       const responses = await Promise.all(
-        reg.files.map(async file => {
-          const res = await fetch(file);
-          if (!res.ok) throw new Error(`HTTP ${res.status} al cargar ${file}`);
-          return await res.json();
-        })
+        reg.files.map(file => fetchJsonFile(file))
       );
       reg.data = responses.flat();
     } catch (err) {
