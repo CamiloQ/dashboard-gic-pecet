@@ -470,6 +470,90 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .chart-header h3 { font-size: 1rem; color: var(--text-main); }
 .chart-container { position: relative; height: 350px; width: 100%; }
 
+/* Countries Table Styling */
+.countries-table-wrapper {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-top: 8px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+}
+
+.countries-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.countries-table th {
+  background: #f8fafc;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.countries-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.countries-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.countries-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.country-rank {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.country-name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.country-count-badge {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.country-bar-container {
+  width: 100%;
+  background: #e2e8f0;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.country-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
 /* Table Section */
 .table-section {
   background: var(--bg-card);

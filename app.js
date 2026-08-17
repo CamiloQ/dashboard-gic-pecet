@@ -588,10 +588,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderCountriesTable() {
-    const listEl = document.getElementById('global-countries');
-    if (!listEl) return;
+    const bodyEl = document.getElementById('global-countries-body');
+    const badgeEl = document.getElementById('countries-count-badge');
+    if (!bodyEl) return;
     
     const countryCounts = {};
+    let totalMentions = 0;
+
     filteredStudies.forEach(s => {
       const c = s.pais_origen || s.country || '';
       if (!c) return;
@@ -599,15 +602,44 @@ document.addEventListener('DOMContentLoaded', () => {
       const countries = c.split(/[,;]/).map(x => x.trim()).filter(x => x);
       countries.forEach(country => {
         countryCounts[country] = (countryCounts[country] || 0) + 1;
+        totalMentions++;
       });
     });
     
-    const sortedCountries = Object.entries(countryCounts)
-      .sort((a, b) => b[1] - a[1]);
-      
-    listEl.innerHTML = sortedCountries.length > 0
-      ? sortedCountries.map(c => `<li><span>${escapeHtml(c[0])}</span><span style="font-weight:600; color:var(--accent-primary);">${c[1].toLocaleString()}</span></li>`).join('')
-      : `<li><span>Ninguno</span><span>0</span></li>`;
+    const sortedCountries = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
+
+    if (badgeEl) {
+      badgeEl.textContent = `${sortedCountries.length.toLocaleString()} Países`;
+    }
+
+    if (sortedCountries.length === 0) {
+      bodyEl.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">No hay información de países disponible para los filtros actuales.</td></tr>`;
+      return;
+    }
+
+    const maxCount = sortedCountries[0][1];
+
+    let html = '';
+    sortedCountries.forEach(([country, count], idx) => {
+      const pct = totalMentions > 0 ? ((count / totalMentions) * 100).toFixed(1) : '0.0';
+      const relativeWidth = maxCount > 0 ? ((count / maxCount) * 100).toFixed(1) : '0';
+
+      html += `
+        <tr>
+          <td class="country-rank">${idx + 1}</td>
+          <td class="country-name">${escapeHtml(country)}</td>
+          <td style="text-align: right;"><span class="country-count-badge">${count.toLocaleString()}</span></td>
+          <td style="text-align: right; font-weight: 600; color: var(--text-muted);">${pct}%</td>
+          <td>
+            <div class="country-bar-container" title="${pct}% del total (${count.toLocaleString()} estudios)">
+              <div class="country-bar-fill" style="width: ${relativeWidth}%;"></div>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+
+    bodyEl.innerHTML = html;
   }
 
 
