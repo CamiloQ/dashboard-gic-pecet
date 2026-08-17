@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'National Institutes of Health / NLM (EEUU & Global)',
       parquet: 'clinicaltrials.parquet',
       files: ['clinicaltrials_gov.json'],
-      defaultCount: 94128,
+      defaultCount: 463287,
       data: null
     },
     euctr: {
