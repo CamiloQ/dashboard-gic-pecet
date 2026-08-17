@@ -472,7 +472,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 /* Countries Table Styling */
 .countries-table-wrapper {
-  max-height: 320px;
+  height: 350px;
   overflow-y: auto;
   overflow-x: auto;
   border: 1px solid var(--border-color);
@@ -812,6 +812,10 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   }
 
   .chart-container {
+    height: 280px;
+  }
+
+  .countries-table-wrapper {
     height: 280px;
   }
 
