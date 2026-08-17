@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Year
       const rawDate = s.fecha_radicacion || s.fecha_acto_administrativo || '';
       let year = 'Desconocido';
-      const yearMatch = rawDate.match(/\b(19|20)\d{2}\b/);
+      const yearMatch = String(rawDate).match(/\b(19|20)\d{2}\b/);
       if (yearMatch) {
         year = yearMatch[0];
       }
@@ -506,14 +506,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const query = searchInput.value.toLowerCase().trim();
 
     filteredStudies = rawStudies.filter(s => {
-      // Date Filter: <= 2026
+      // Date Filter: <= 2035
       const currentYearNum = parseInt((s.fecha_radicacion || s.año || '').toString().substring(0, 4)) || 0;
-      if (currentYearNum > 2026) return false;
+      if (currentYearNum > 2035) return false;
 
       if (selYear !== 'all') {
         const rawDate = s.fecha_radicacion || s.fecha_acto_administrativo || '';
         let extractedYear = 'Desconocido';
-        const yearMatch = rawDate.match(/\b(19|20)\d{2}\b/);
+        const yearMatch = String(rawDate).match(/\b(19|20)\d{2}\b/);
         if (yearMatch) extractedYear = yearMatch[0];
         if (extractedYear !== selYear) return false;
       }
