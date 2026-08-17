@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     clinicaltrials: {
       name: 'ClinicalTrials.gov',
       subtitle: 'National Institutes of Health / NLM (EEUU & Global)',
-      parquet: 'clinicaltrials.parquet',
+      parquetParts: ['clinicaltrials_part1.parquet', 'clinicaltrials_part2.parquet', 'clinicaltrials_part3.parquet', 'clinicaltrials_part4.parquet'],
       files: ['clinicaltrials_gov.json'],
       defaultCount: 463287,
       data: null
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     oms: {
       name: 'OMS Global',
       subtitle: 'Base de datos ICTRP (>=2012)',
-      parquet: 'oms.parquet',
+      parquetParts: ['oms_part1.parquet', 'oms_part2.parquet'],
       files: ['oms_part1.json', 'oms_part2.json', 'oms_part3.json', 'oms_part4.json'],
       defaultCount: 349479,
       data: null
@@ -170,20 +170,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showLoading(`Cargando ${reg.name}...`, `Procesando estudios clínicos con DuckDB Engine`);
 
-    // Primary: DuckDB WASM Parquet Engine Query via registerFileURL
-    if (isDuckDBReady && duckdbEngine && duckdbConn && reg.parquet) {
+    const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // Primary: DuckDB WASM Parquet Engine (supports single or multi-part files)
+    const parquetFiles = reg.parquetParts || (reg.parquet ? [reg.parquet] : null);
+    if (isDuckDBReady && duckdbEngine && duckdbConn && parquetFiles) {
       try {
-        const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const parquetUrl = isLocal ? `data/${reg.parquet}` : `${CDN_BASE_URL}${reg.parquet}`;
-        
-        await duckdbEngine.registerFileURL(reg.parquet, parquetUrl, 4, false);
-        const res = await duckdbConn.query(`SELECT * FROM '${reg.parquet}'`);
+        // Register all parquet parts with DuckDB
+        for (const pf of parquetFiles) {
+          const parquetUrl = isLocal ? `data/${pf}` : `${CDN_BASE_URL}${pf}`;
+          await duckdbEngine.registerFileURL(pf, parquetUrl, 4, false);
+        }
+
+        // Build query: single file or multi-file read_parquet
+        let query;
+        if (parquetFiles.length === 1) {
+          query = `SELECT * FROM '${parquetFiles[0]}'`;
+        } else {
+          const fileList = parquetFiles.map(f => `'${f}'`).join(', ');
+          query = `SELECT * FROM read_parquet([${fileList}])`;
+        }
+
+        const res = await duckdbConn.query(query);
         reg.data = res.toArray().map(row => row.toJSON());
-        console.log(`[DuckDB WASM] Carga exitosa de ${reg.parquet}: ${reg.data.length} registros.`);
+        console.log(`[DuckDB WASM] Carga exitosa (${parquetFiles.length} parte(s)): ${reg.data.length} registros.`);
         hideLoading();
         return reg.data;
       } catch (parquetErr) {
-        console.warn(`[DuckDB WASM] Falló consulta Parquet para ${reg.parquet}, derivando a JSON:`, parquetErr);
+        console.warn(`[DuckDB WASM] Falló consulta Parquet, derivando a JSON:`, parquetErr);
       }
     }
 
