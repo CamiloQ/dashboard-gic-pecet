@@ -1,0 +1,4 @@
+name: multiregistry
+type: duckdb
+options:
+  filename: ':memory:'
