@@ -409,9 +409,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateSelect(filterYear, yearMap, 'Todos los Años');
   }
 
-  function populateSelect(selectEl, dataMap, defaultText) {
+  function populateSelect(selectEl, dataMap, defaultText, maxOptions = 100) {
     selectEl.innerHTML = `<option value="all">${defaultText}</option>`;
-    const sortedKeys = Object.keys(dataMap).sort((a, b) => dataMap[b] - dataMap[a]);
+    const sortedKeys = Object.keys(dataMap).sort((a, b) => dataMap[b] - dataMap[a]).slice(0, maxOptions);
 
     sortedKeys.forEach(key => {
       const opt = document.createElement('option');
