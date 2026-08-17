@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Instituto Nacional de Vigilancia de Medicamentos y Alimentos (Colombia)',
       parquet: 'invima.parquet',
       files: ['invima_estudios_clinicos.json'],
+      defaultCount: 1150,
       data: null
     },
     clinicaltrials: {
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'National Institutes of Health / NLM (EEUU & Global)',
       parquet: 'clinicaltrials.parquet',
       files: ['clinicaltrials_gov.json'],
+      defaultCount: 94128,
       data: null
     },
     euctr: {
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'European Medicines Agency / EudraCT (Unión Europea)',
       parquet: 'euctr.parquet',
       files: ['eu_clinicaltrials.json'],
+      defaultCount: 500,
       data: null
     },
     anvisa: {
@@ -61,6 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Agência Nacional de Vigilância Sanitária (Brasil)',
       parquet: 'anvisa.parquet',
       files: ['anvisa_brasil.json'],
+      defaultCount: 4669,
       data: null
     },
     cofepris: {
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Comisión Federal para la Protección contra Riesgos Sanitarios (México)',
       parquet: 'cofepris.parquet',
       files: ['cofepris_mexico.json'],
+      defaultCount: 5568,
       data: null
     },
     paho: {
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Portal de Ensayos Clínicos de las Américas (OPS / OMS ICTRP)',
       parquet: 'paho.parquet',
       files: ['paho_americas.json'],
+      defaultCount: 214,
       data: null
     },
     rec_gaico: {
@@ -82,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Registro de Ensayos Clínicos en Oncología y Salud (ANMAT / REC)',
       parquet: 'rec_gaico.parquet',
       files: ['rec_gaico.json'],
+      defaultCount: 421,
       data: null
     },
     anmat: {
@@ -89,6 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Base de Datos de Estudios de Farmacología Clínica',
       parquet: 'anmat.parquet',
       files: ['anmat_argentina.json'],
+      defaultCount: 1862,
       data: null
     },
     oms: {
@@ -96,6 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       subtitle: 'Base de datos ICTRP (>=2012)',
       parquet: 'oms.parquet',
       files: ['oms_part1.json', 'oms_part2.json', 'oms_part3.json', 'oms_part4.json'],
+      defaultCount: 349479,
       data: null
     }
   };
@@ -311,9 +320,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!badge) return;
 
       if (!regData) {
-        // Show count from loaded data if active or default count
-        if (regKey === activeRegistryKey && rawStudies.length > 0) {
-          badge.textContent = rawStudies.length.toLocaleString();
+        if (!q) {
+          const count = registryMap[regKey]?.defaultCount || (regKey === activeRegistryKey ? rawStudies.length : 0);
+          badge.textContent = count.toLocaleString();
         }
         return;
       }
