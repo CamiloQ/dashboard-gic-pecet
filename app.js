@@ -602,6 +602,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function normalizeCountryName(rawName) {
+    if (!rawName) return 'No especificado';
+    let name = rawName.trim();
+
+    const mapping = {
+      'United States': 'Estados Unidos',
+      'United States of America': 'Estados Unidos',
+      'USA': 'Estados Unidos',
+      'United Kingdom': 'Reino Unido',
+      'United Kingdom of Great Britain and Northern Ireland': 'Reino Unido',
+      'Republic of Korea': 'Corea del Sur',
+      'Korea, Republic of': 'Corea del Sur',
+      'Korea, Democratic People\'s Republic of': 'Corea del Norte',
+      'Democratic Republic of the Congo': 'RD del Congo',
+      'Congo, The Democratic Republic of the': 'RD del Congo',
+      'Russian Federation': 'Rusia',
+      'Islamic Republic of Iran': 'Irán',
+      'Iran, Islamic Republic of': 'Irán',
+      'People\'s Republic of China': 'China',
+      'Taiwan, Province of China': 'Taiwán',
+      'Republic of Moldova': 'Moldavia',
+      'Moldova, Republic of': 'Moldavia',
+      'Syrian Arab Republic': 'Siria',
+      'United Arab Emirates': 'Emiratos Árabes Unidos',
+      'Tanzania, United Republic of': 'Tanzania',
+      'Bolivia, Plurinational State of': 'Bolivia',
+      'Venezuela, Bolivarian Republic of': 'Venezuela',
+      'Viet Nam': 'Vietnam',
+      'Czech Republic': 'República Checa',
+      'Czechia': 'República Checa'
+    };
+
+    if (mapping[name]) return mapping[name];
+
+    // Clean generic redundant prefixes
+    name = name.replace(/^(Republic of|The Republic of|Kingdom of|State of|Federated States of)\s+/i, '');
+    name = name.replace(/,\s*(Republic of|Plurinational State of|Bolivarian Republic of|Islamic Republic of)$/i, '');
+
+    return name.trim() || rawName.trim();
+  }
+
   function renderCountriesTable() {
     const bodyEl = document.getElementById('global-countries-body');
     const badgeEl = document.getElementById('countries-count-badge');
@@ -615,7 +656,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!c) return;
       
       const countries = c.split(/[,;]/).map(x => x.trim()).filter(x => x);
-      countries.forEach(country => {
+      countries.forEach(rawCountry => {
+        const country = normalizeCountryName(rawCountry);
         countryCounts[country] = (countryCounts[country] || 0) + 1;
         totalMentions++;
       });
@@ -642,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
       html += `
         <tr>
           <td class="country-rank">${idx + 1}</td>
-          <td class="country-name">${escapeHtml(country)}</td>
+          <td class="country-name" title="${escapeHtml(country)}">${escapeHtml(country)}</td>
           <td style="text-align: right;"><span class="country-count-badge">${count.toLocaleString()}</span></td>
           <td style="text-align: right; font-weight: 600; color: var(--text-muted);">${pct}%</td>
           <td>

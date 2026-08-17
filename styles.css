@@ -527,6 +527,10 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .country-name {
   font-weight: 600;
   color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
 }
 
 .country-count-badge {
