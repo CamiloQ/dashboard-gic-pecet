@@ -4,3 +4,5 @@ IctrpResults.csv
 *.xls
 /*.parquet
 rebec_brasil*
+node_modules/
+dist/
