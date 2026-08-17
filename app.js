@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Fetch Dataset On-Demand (DuckDB WASM Parquet Engine with Lazy JSON Fallback)
+  // Fetch Dataset On-Demand (DuckDB WASM Parquet Engine)
   async function ensureRegistryLoaded(regKey) {
     const reg = registryMap[regKey];
     if (!reg) return [];
@@ -158,9 +158,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       return reg.data;
     }
 
+    showLoading(`Cargando ${reg.name}...`, `Procesando estudios clínicos con DuckDB Engine`);
+
     // Try DuckDB WASM Parquet query first if Engine is ready
     if (isDuckDBReady && duckdbConn && reg.parquet) {
-      showLoading(`Cargando ${reg.name}...`, `Consultando Parquet vía DuckDB WASM Engine`);
       try {
         const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const parquetUrl = isLocal ? `data/${reg.parquet}` : `${CDN_BASE_URL}${reg.parquet}`;
@@ -175,9 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // Fallback: Lazy JSON Streaming Loader
-    showLoading(`Cargando ${reg.name}...`, `Obteniendo datos comprimidos vía CDN jsDelivr`);
-
+    // Fallback: Direct JSON Loader
     try {
       const firstChunk = await fetchJsonFile(reg.files[0]);
       reg.data = [...firstChunk];
