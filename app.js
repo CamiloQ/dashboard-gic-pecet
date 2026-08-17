@@ -1,60 +1,100 @@
-/* INVIMA & Multi-Registry Clinical Studies Dashboard Engine - 7 Registries */
+/* INVIMA & Multi-Registry Clinical Studies Dashboard Engine - DuckDB WASM + Parquet */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-  // Registry Dataset Mapping (Lazy JSON Loader)
+  // DuckDB WASM Engine State
+  let duckdbEngine = null;
+  let duckdbConn = null;
+  let isDuckDBReady = false;
+
+  // Initialize DuckDB WASM in background Web Worker
+  (async function initDuckDB() {
+    try {
+      const duckdb = await import('https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm');
+      const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+      const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+
+      const worker_url = URL.createObjectURL(
+        new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' })
+      );
+
+      const worker = new Worker(worker_url);
+      const logger = new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING);
+      duckdbEngine = new duckdb.AsyncDuckDB(logger, worker);
+      await duckdbEngine.instantiate(bundle.mainModule, bundle.pthreadWorker);
+      URL.revokeObjectURL(worker_url);
+
+      duckdbConn = await duckdbEngine.connect();
+      isDuckDBReady = true;
+      console.log('DuckDB WASM Engine initialized successfully! High-performance Parquet mode enabled.');
+    } catch (err) {
+      console.warn('Aviso: DuckDB WASM no pudo inicializarse, usando modo JSON perezoso:', err);
+      isDuckDBReady = false;
+    }
+  })();
+
+  // Registry Dataset Mapping (Parquet + Lazy JSON Loader)
   const registryMap = {
     invima: {
       name: 'INVIMA Colombia',
       subtitle: 'Instituto Nacional de Vigilancia de Medicamentos y Alimentos (Colombia)',
+      parquet: 'invima.parquet',
       files: ['invima_estudios_clinicos.json'],
       data: null
     },
     clinicaltrials: {
       name: 'ClinicalTrials.gov',
       subtitle: 'National Institutes of Health / NLM (EEUU & Global)',
+      parquet: 'clinicaltrials.parquet',
       files: ['clinicaltrials_gov.json'],
       data: null
     },
     euctr: {
       name: 'EU Clinical Trials',
       subtitle: 'European Medicines Agency / EudraCT (Unión Europea)',
+      parquet: 'euctr.parquet',
       files: ['eu_clinicaltrials.json'],
       data: null
     },
     anvisa: {
       name: 'ANVISA Brasil',
       subtitle: 'Agência Nacional de Vigilância Sanitária (Brasil)',
+      parquet: 'anvisa.parquet',
       files: ['anvisa_brasil.json'],
       data: null
     },
     cofepris: {
       name: 'COFEPRIS México',
       subtitle: 'Comisión Federal para la Protección contra Riesgos Sanitarios (México)',
+      parquet: 'cofepris.parquet',
       files: ['cofepris_mexico.json'],
       data: null
     },
     paho: {
       name: 'OPS / PAHO Américas',
       subtitle: 'Portal de Ensayos Clínicos de las Américas (OPS / OMS ICTRP)',
+      parquet: 'paho.parquet',
       files: ['paho_americas.json'],
       data: null
     },
     rec_gaico: {
       name: 'REC GAICO',
       subtitle: 'Registro de Ensayos Clínicos en Oncología y Salud (ANMAT / REC)',
+      parquet: 'rec_gaico.parquet',
       files: ['rec_gaico.json'],
       data: null
     },
     anmat: {
       name: 'ANMAT Argentina',
       subtitle: 'Base de Datos de Estudios de Farmacología Clínica',
+      parquet: 'anmat.parquet',
       files: ['anmat_argentina.json'],
       data: null
     },
     oms: {
       name: 'OMS Global',
       subtitle: 'Base de datos ICTRP (>=2012)',
+      parquet: 'oms.parquet',
       files: ['oms_part1.json', 'oms_part2.json', 'oms_part3.json', 'oms_part4.json'],
       data: null
     }
@@ -109,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Fetch Dataset On-Demand (Progressive Streaming for Mobile Optimization)
+  // Fetch Dataset On-Demand (DuckDB WASM Parquet Engine with Lazy JSON Fallback)
   async function ensureRegistryLoaded(regKey) {
     const reg = registryMap[regKey];
     if (!reg) return [];
@@ -118,15 +158,31 @@ document.addEventListener('DOMContentLoaded', () => {
       return reg.data;
     }
 
+    // Try DuckDB WASM Parquet query first if Engine is ready
+    if (isDuckDBReady && duckdbConn && reg.parquet) {
+      showLoading(`Cargando ${reg.name}...`, `Consultando Parquet vía DuckDB WASM Engine`);
+      try {
+        const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const parquetUrl = isLocal ? `data/${reg.parquet}` : `${CDN_BASE_URL}${reg.parquet}`;
+        
+        const res = await duckdbConn.query(`SELECT * FROM read_parquet('${parquetUrl}')`);
+        reg.data = res.toArray().map(row => row.toJSON());
+        console.log(`[DuckDB WASM] Carga exitosa de ${reg.parquet}: ${reg.data.length} registros.`);
+        hideLoading();
+        return reg.data;
+      } catch (parquetErr) {
+        console.warn(`[DuckDB WASM] Falló consulta Parquet para ${reg.parquet}, derivando a JSON:`, parquetErr);
+      }
+    }
+
+    // Fallback: Lazy JSON Streaming Loader
     showLoading(`Cargando ${reg.name}...`, `Obteniendo datos comprimidos vía CDN jsDelivr`);
 
     try {
-      // Step 1: Immediately fetch & parse first chunk for instant render (< 400ms on mobile)
       const firstChunk = await fetchJsonFile(reg.files[0]);
       reg.data = [...firstChunk];
       hideLoading();
 
-      // Step 2: Stream remaining chunks progressively in background without blocking Main Thread
       if (reg.files.length > 1) {
         (async () => {
           for (let i = 1; i < reg.files.length; i++) {

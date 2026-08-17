@@ -2,3 +2,5 @@ clinicaltrials_gov.json
 IctrpResults.csv
 *.csv
 *.xls
+/*.parquet
+rebec_brasil*
