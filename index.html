@@ -1,405 +1,175 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Multirregistro de Estudios Clínicos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" crossorigin src="./assets/index-BmWYT_Lb.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CkGTTRtt.css">
-</head>
-<body>
-  <div class="app-container">
-    
-    <!-- Top Header Bar -->
-    <header class="header-bar">
-      <div class="brand-section">
-        <div class="brand-icon">GIC</div>
-        <div class="brand-titles">
-          <h1>Dashboard Multirregistro de Estudios Clínicos</h1>
-          <p>Plataforma Global de Análisis Normativo e Inteligencia de Ensayos Clínicos</p>
-        </div>
-      </div>
-      <div class="header-actions">
-        <div class="global-search-container">
-          <input type="text" id="search-input" class="filter-control search-global" placeholder="Buscador global...">
-        </div>
-        <div class="badge-counter">
-          <span id="filtered-count-badge">0 / 0</span> Estudios Filtrados
-        </div>
-        <button id="btn-export-csv" class="btn-action">
-          Exportar a CSV
-        </button>
-      </div>
-    </header>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script>
+			try {
+				/** @type {'light' | 'dark' | 'system'} */
+				const savedTheme = localStorage.getItem('evidence-theme') ?? 'system';
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = savedTheme === 'system' ? (prefersDark ? 'dark' : 'light') : savedTheme;
+				document.documentElement.setAttribute('data-theme', theme);
+			} catch (e) {}
+		</script>
+		
+		<link href="/_app/immutable/assets/0.0r3yUHX4.css" rel="stylesheet">
+		<link href="/_app/immutable/assets/VennDiagram.BCpuTJYF.css" rel="stylesheet">
+		<link rel="modulepreload" href="/_app/immutable/entry/start.CEK31FZc.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/entry.1B91I49D.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/scheduler.DyOoecxJ.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.CnecAK2A.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/preload-helper.D7HrI6pR.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.DRJ8jfE2.js">
+		<link rel="modulepreload" href="/_app/immutable/nodes/0.sUv0xhDj.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.rV6zwFgL.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/VennDiagram.svelte_svelte_type_style_lang.DWcYVH5F.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/setTrackProxy.DjIbdjlZ.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/stores.mZf4_J_l.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.CMoYhF3Z.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/AccordionItem.DAKPcVeg.js">
+		<link rel="modulepreload" href="/_app/immutable/nodes/4.DlEnRBnL.js"><title>Evidence</title><!-- HEAD_svelte-2igo1p_START --> <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@evidence_dev"><!-- HEAD_svelte-2igo1p_END -->
+	</head>
+	<body>
+		<script>
+			
+		</script>
+		<div>
+			<!-- SvelteKit Hydrated Content -->
+			   <div class="z-[1] fixed right-0 bottom-0 mx-10 my-6 w-80"></div> <div data-sveltekit-preload-data="hover" class="antialiased"> <header class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-300/50 bg-base-100/90 backdrop-blur print:hidden"><div class=" max-w-7xl mx-auto px-5 sm:px-6 md:px-12 flex flex-1 items-center justify-between" style="max-width:undefinedpx;"><div class="flex gap-x-4 items-center"><button type="button" class="text-base-content hover:bg-base-200 rounded-lg p-1 -ml-1 transition-all duration-500 md:hidden"><span class="sr-only" data-svelte-h="svelte-73kebv">Open sidebar</span> <svg class="w-5 h-5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 6l16 0"></path><path d="M4 12l16 0"></path><path d="M4 18l16 0"></path></svg></button> <a href="/" class="text-sm font-bold text-base-content hidden md:block"><img src="/_app/immutable/assets/wordmark-black.rfl-FBgf.png" alt="Home" class="h-5 aspect-auto block dark:hidden" href="/"> <img src="/_app/immutable/assets/wordmark-white.C8ZS96Ri.png" alt="Home" class="h-5 aspect-auto hidden dark:block" href="/"></a></div> <div class="flex gap-2 text-sm items-center"> <div class="flex gap-2 items-center">   </div> <div class="relative"> <button type="button" tabindex="0" aria-controls="5dQrHF0Wyv" aria-expanded="false" data-state="closed" id="3wQ2RAOhO3" data-melt-dropdown-menu-trigger="" data-menu-trigger="" class="inline-flex items-center justify-center font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted disabled:pointer-events-none disabled:opacity-50 hover:text-base-content h-8 rounded-md text-xs px-1 hover:bg-base-200 shadow-base-200" aria-label="Menu" data-button-root=""><svg class="h-6 w-6" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path></svg></button> </div></div></div></header> <div class=" max-w-7xl print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start" style="max-width:undefinedpx;"><div class="print:hidden">  <aside class="w-48 flex-none hidden md:flex"><div class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm pretty-scrollbar"><div class="flex flex-col pb-6"><a class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline text-base-heading" href="/">Home</a> </div> </div> <div class="fixed bottom-0 text-xs py-2" data-svelte-h="svelte-fworv4"><a href="https://www.evidence.dev" class="bg-gradient-to-r inline-block antialiased font-medium">Built with Evidence</a></div></aside></div> <main class="md:pl-8 md:pr-8  mt-16 sm:mt-20 flex-grow overflow-x-hidden print:px-0 print:mt-8"><div class="print:hidden"><div class="flex items-start mt-0 whitespace-nowrap overflow-auto"><div class="inline-flex items-center text-sm capitalize gap-1 text-base-content-muted mb-2 sm:mb-4"><a href="/" class="hover:underline">Home </a></div></div></div> <article id="evidence-main-article" class="select-text markdown pb-10">      <h1 class="markdown" id="gic-pecet--portal-multirregistro-de-ensayos-clínicos" data-svelte-h="svelte-lh3nly"><a href="#gic-pecet--portal-multirregistro-de-ensayos-clínicos">GIC-PECET • Portal Multirregistro de Ensayos Clínicos</a></h1> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div> <h2 class="markdown" id="cobertura-global-de-registros-multirregionales" data-svelte-h="svelte-1jen75b"><a href="#cobertura-global-de-registros-multirregionales">Cobertura Global de Registros Multirregionales</a></h2> <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">  <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">ClinicalTrials.gov (Global) </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">463,287 </span> </div> </div>   <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">OMS Global ICTRP </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">349,479 </span> </div> </div>   <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">INVIMA Colombia </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">1,150 </span> </div> </div>   <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">ANVISA Brasil </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">4,669 </span> </div> </div></div> <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">  <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">COFEPRIS México </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">5,568 </span> </div> </div>   <div class="inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top" style="
+        min-width: 18%;
+        max-width: none;
+		"><p class="text-sm align-top leading-none">ANMAT Argentina </p> <div class="relative text-xl font-medium mt-1.5">   <span style="color: ">1,862 </span> </div> </div></div> <hr class="markdown"> <h2 class="markdown" id="1-clinicaltrialsgov-eeuu--global--463287-registros" data-svelte-h="svelte-wyo0sb"><a href="#1-clinicaltrialsgov-eeuu--global--463287-registros">1. ClinicalTrials.gov (EEUU &amp; Global) • 463.287 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div>     <div role="none" class="chart-container mt-2 mb-3 svelte-19r8f8"><div role="status" class="animate-pulse"><span class="sr-only" data-svelte-h="svelte-1wtojot">Loading...</span> <div class="bg-base-100 rounded-md max-w-[100%]" style="height:222px; margin-top: 15px; margin-bottom: 31px;"></div></div>  <div class="chart-footer svelte-19r8f8"> </div> </div>            <div data-testid="DataTable-ct_sample" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">10</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 100 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div>  <hr class="markdown"> <h2 class="markdown" id="2-oms-global-ictrp--349479-registros" data-svelte-h="svelte-nem8my"><a href="#2-oms-global-ictrp--349479-registros">2. OMS Global ICTRP • 349.479 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div>           <div data-testid="DataTable-oms_sample" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">10</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 100 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div>  <hr class="markdown"> <h2 class="markdown" id="3-invima-colombia--1150-registros" data-svelte-h="svelte-1wwzg9q"><a href="#3-invima-colombia--1150-registros">3. INVIMA Colombia • 1.150 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div> <div class="over-container svelte-1p12lev"> </div>     <div role="none" class="chart-container mt-2 mb-3 svelte-19r8f8"><div role="status" class="animate-pulse"><span class="sr-only" data-svelte-h="svelte-1wtojot">Loading...</span> <div class="bg-base-100 rounded-md max-w-[100%]" style="height:267px; margin-top: 15px; margin-bottom: 31px;"></div></div>  <div class="chart-footer svelte-19r8f8"> </div> </div>            <div data-testid="DataTable-invima_data" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">115</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 1150 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div>  <hr class="markdown"> <h2 class="markdown" id="4-anvisa-brasil--4669-registros" data-svelte-h="svelte-1c7xq02"><a href="#4-anvisa-brasil--4669-registros">4. ANVISA Brasil • 4.669 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div>           <div data-testid="DataTable-anvisa_data" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">10</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 100 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div>  <hr class="markdown"> <h2 class="markdown" id="5-cofepris-méxico--5568-registros" data-svelte-h="svelte-1j753qn"><a href="#5-cofepris-méxico--5568-registros">5. COFEPRIS México • 5.568 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div>           <div data-testid="DataTable-cofepris_data" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">10</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 100 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div>  <hr class="markdown"> <h2 class="markdown" id="6-anmat-argentina--1862-registros" data-svelte-h="svelte-1rhn7rr"><a href="#6-anmat-argentina--1862-registros">6. ANMAT Argentina • 1.862 Registros</a></h2> <div class="over-container svelte-1p12lev"> </div>           <div data-testid="DataTable-anmat_data" role="none" class="table-container mt-2 mb-5 svelte-1vxfjlq"> <div class="search-container mb-1 mr-1 svelte-djxkxx"><input class="search-bar svelte-djxkxx" type="text" placeholder="Search" value=""> <div class="search-icon svelte-djxkxx"><svg class="pl-0.5" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg></div> </div> <div class="scrollbox pretty-scrollbar svelte-1vxfjlq"><table class="svelte-1vxfjlq"><thead> <tr class="border-b border-base-content-muted/60">   </tr> </thead> <tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr><tr class="border-b border-base-content-muted/20 svelte-orfja7">   </tr> </table></div> <div class="noresults svelte-1vxfjlq" data-svelte-h="svelte-l3t0gi">No Results</div> <div class="pagination svelte-1vxfjlq"><div class="page-labels mr-auto svelte-1vxfjlq"><button aria-label="first-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-left" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7l-5 5l5 5"></path><path d="M17 7l-5 5l5 5"></path></svg></div></button> <button aria-label="previous-page" class="page-changer svelte-1vxfjlq" disabled><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg></div></button> <span class="page-count svelte-1vxfjlq">Page
+						<input class="page-input svelte-1vxfjlq" style="width: 1ch;" type="number" placeholder="1">
+						/
+						<span class="page-count ml-1 svelte-1vxfjlq">187</span></span> <span class="print-page-count svelte-1vxfjlq">10 of 1862 records</span> <button aria-label="next-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon h-[0.83em] flex items-center svelte-1vxfjlq"><svg class="h-[0.83em]" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg></div></button> <button aria-label="last-page" class="page-changer svelte-1vxfjlq" ><div class="page-icon flex items-center svelte-1vxfjlq"><svg class="icon icon-tabler icon-tabler-chevrons-right" width="100%" height="100%" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 7l5 5l-5 5"></path><path d="M13 7l5 5l-5 5"></path></svg></div></button></div>  </div></div> </article></main> <div class="print:hidden"><aside class="hidden lg:block w-48"><div class="fixed w-48 top-20 bottom-20 pl-4 px-3 overflow-auto pretty-scrollbar"></div></aside></div></div></div>  
+			<script type="application/json" data-sveltekit-fetched data-url="/api/customFormattingSettings.json/GET.json">{"status":200,"statusText":"","headers":{},"body":"{\"customFormattingSettings\":{\"version\":\"1.0\",\"customFormats\":[]}}"}</script>
+			<script type="application/json" data-sveltekit-fetched data-url="/api///evidencemeta.json">{"status":200,"statusText":"","headers":{},"body":"{\"queries\":[{\"id\":\"ct_summary\",\"compiledQueryString\":\"select count(*) as total_ct from multiregistry.clinicaltrials\",\"inputQueryString\":\"select count(*) as total_ct from multiregistry.clinicaltrials\",\"compiled\":false,\"inline\":true},{\"id\":\"oms_summary\",\"compiledQueryString\":\"select count(*) as total_oms from multiregistry.oms\",\"inputQueryString\":\"select count(*) as total_oms from multiregistry.oms\",\"compiled\":false,\"inline\":true},{\"id\":\"invima_summary\",\"compiledQueryString\":\"select count(*) as total_invima from multiregistry.invima\",\"inputQueryString\":\"select count(*) as total_invima from multiregistry.invima\",\"compiled\":false,\"inline\":true},{\"id\":\"anvisa_summary\",\"compiledQueryString\":\"select count(*) as total_anvisa from multiregistry.anvisa\",\"inputQueryString\":\"select count(*) as total_anvisa from multiregistry.anvisa\",\"compiled\":false,\"inline\":true},{\"id\":\"cofepris_summary\",\"compiledQueryString\":\"select count(*) as total_cofepris from multiregistry.cofepris\",\"inputQueryString\":\"select count(*) as total_cofepris from multiregistry.cofepris\",\"compiled\":false,\"inline\":true},{\"id\":\"anmat_summary\",\"compiledQueryString\":\"select count(*) as total_anmat from multiregistry.anmat\",\"inputQueryString\":\"select count(*) as total_anmat from multiregistry.anmat\",\"compiled\":false,\"inline\":true},{\"id\":\"ct_phases\",\"compiledQueryString\":\"select fase_tabla as fase, count(*) as cantidad\\nfrom multiregistry.clinicaltrials\\ngroup by 1 order by cantidad desc limit 8\",\"inputQueryString\":\"select fase_tabla as fase, count(*) as cantidad\\nfrom multiregistry.clinicaltrials\\ngroup by 1 order by cantidad desc limit 8\",\"compiled\":false,\"inline\":true},{\"id\":\"ct_sample\",\"compiledQueryString\":\"select nct_id, titulo, patrocinador_cro, fase_tabla, estado_operativo\\nfrom multiregistry.clinicaltrials\\nlimit 100\",\"inputQueryString\":\"select nct_id, titulo, patrocinador_cro, fase_tabla, estado_operativo\\nfrom multiregistry.clinicaltrials\\nlimit 100\",\"compiled\":false,\"inline\":true},{\"id\":\"oms_sample\",\"compiledQueryString\":\"select radicado, titulo, patrocinador_cro, fase_tabla, estado_operativo\\nfrom multiregistry.oms\\nlimit 100\",\"inputQueryString\":\"select radicado, titulo, patrocinador_cro, fase_tabla, estado_operativo\\nfrom multiregistry.oms\\nlimit 100\",\"compiled\":false,\"inline\":true},{\"id\":\"invima_sponsors\",\"compiledQueryString\":\"select patrocinador_cro, count(*) as total\\nfrom multiregistry.invima\\ngroup by 1 order by total desc limit 10\",\"inputQueryString\":\"select patrocinador_cro, count(*) as total\\nfrom multiregistry.invima\\ngroup by 1 order by total desc limit 10\",\"compiled\":false,\"inline\":true},{\"id\":\"invima_data\",\"compiledQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.invima\",\"inputQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.invima\",\"compiled\":false,\"inline\":true},{\"id\":\"anvisa_data\",\"compiledQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.anvisa\\nlimit 100\",\"inputQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.anvisa\\nlimit 100\",\"compiled\":false,\"inline\":true},{\"id\":\"cofepris_data\",\"compiledQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.cofepris\\nlimit 100\",\"inputQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.cofepris\\nlimit 100\",\"compiled\":false,\"inline\":true},{\"id\":\"anmat_data\",\"compiledQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.anmat\",\"inputQueryString\":\"select radicado, titulo, patrocinador_cro, estado_operativo\\nfrom multiregistry.anmat\",\"compiled\":false,\"inline\":true}]}"}</script>
+			<script type="application/json" data-sveltekit-fetched data-url="/api/pagesManifest.json">{"status":200,"statusText":"","headers":{},"body":"{\"label\":\"Home\",\"href\":\"/\",\"children\":{},\"isTemplated\":false,\"isPage\":true}"}</script>
+			<script>
+				{
+					__sveltekit_o6io6u = {
+						base: ""
+					};
 
-    <!-- Multi-Registry Navigation Bar (Top Tabs) -->
-    <nav class="registry-nav-bar" id="registry-nav-bar">
-      <div class="registry-tab active" data-registry="invima">
-        <div>
-          <div class="registry-tab-title">INVIMA Colombia</div>
-          <div class="registry-tab-subtitle">Registro Nacional Colombia</div>
-        </div>
-        <div class="registry-tab-badge">1,150</div>
-      </div>
-      <div class="registry-tab" data-registry="clinicaltrials">
-        <div>
-          <div class="registry-tab-title">ClinicalTrials.gov</div>
-          <div class="registry-tab-subtitle">Registro Global (NIH/EEUU)</div>
-        </div>
-        <div class="registry-tab-badge">463,287</div>
-      </div>
-      <div class="registry-tab" data-registry="oms">
-        <div>
-          <div class="registry-tab-title">OMS Global</div>
-          <div class="registry-tab-subtitle">Base de datos ICTRP (>=2012)</div>
-        </div>
-        <div class="registry-tab-badge">349,479</div>
-      </div>
-      <div class="registry-tab" data-registry="euctr">
-        <div>
-          <div class="registry-tab-title">EU Clinical Trials</div>
-          <div class="registry-tab-subtitle">Registro Europeo (EMA)</div>
-        </div>
-        <div class="registry-tab-badge">500</div>
-      </div>
-      <div class="registry-tab" data-registry="anvisa">
-        <div>
-          <div class="registry-tab-title">ANVISA Brasil</div>
-          <div class="registry-tab-subtitle">Registro Nacional Brasil</div>
-        </div>
-        <div class="registry-tab-badge">4,669</div>
-      </div>
-      <div class="registry-tab" data-registry="cofepris">
-        <div>
-          <div class="registry-tab-title">COFEPRIS México</div>
-          <div class="registry-tab-subtitle">Registro Nacional México</div>
-        </div>
-        <div class="registry-tab-badge">5,568</div>
-      </div>
-      <div class="registry-tab" data-registry="anmat">
-        <div>
-          <div class="registry-tab-title">ANMAT Argentina</div>
-          <div class="registry-tab-subtitle">Base de Datos Farmacología</div>
-        </div>
-        <div class="registry-tab-badge">1,862</div>
-      </div>
-      <div class="registry-tab" data-registry="paho">
-        <div>
-          <div class="registry-tab-title">OPS / PAHO Américas</div>
-          <div class="registry-tab-subtitle">Portal OMS/ICTRP</div>
-        </div>
-        <div class="registry-tab-badge">214</div>
-      </div>
-      <div class="registry-tab" data-registry="rec_gaico">
-        <div>
-          <div class="registry-tab-title">REC GAICO</div>
-          <div class="registry-tab-subtitle">Registro ANMAT / REC</div>
-        </div>
-        <div class="registry-tab-badge">421</div>
-      </div>
+					const element = document.currentScript.parentElement;
 
-    </nav>
+					const data = [null,null];
 
-    <!-- Two-column Layout -->
-    <div class="main-content">
-      
-      <!-- Sidebar Filters -->
-      <aside class="filters-sidebar">
-        <div class="filters-header">
-          <h2 id="filters-header-title">Filtros (INVIMA)</h2>
-          <button id="btn-clear-filters" class="btn-clear">Limpiar Todos</button>
-        </div>
-        
-        <div class="filters-grid">
-          <div class="filter-group">
-            <label for="filter-specialty">Especialidad Médica / Condición</label>
-            <select id="filter-specialty" class="filter-control">
-              <option value="all">Todas las Especialidades</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-sponsor">Patrocinador / CRO</label>
-            <select id="filter-sponsor" class="filter-control">
-              <option value="all">Todos los Patrocinadores</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-status">Estado Operativo</label>
-            <select id="filter-status" class="filter-control">
-              <option value="all">Todos los Estados</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-phase">Fase Clínica</label>
-            <select id="filter-phase" class="filter-control">
-              <option value="all">Todas las Fases</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-year">Año de Radicación</label>
-            <select id="filter-year" class="filter-control">
-              <option value="all">Todos los Años</option>
-            </select>
-          </div>
-          </div>
-        </div>
-      </aside>
+					Promise.all([
+						import("/_app/immutable/entry/start.CEK31FZc.js"),
+						import("/_app/immutable/entry/app.CnecAK2A.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 4],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		
 
-      <!-- Main Content Area -->
-      <main class="content-area">
-        
-        <!-- KPI Metrics -->
-        <section class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-icon-wrapper kpi-icon-blue">TOT</div>
-            <div class="kpi-info">
-              <h3>Estudios Totales</h3>
-              <div class="kpi-value" id="kpi-total">0</div>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon-wrapper kpi-icon-green">ACT</div>
-            <div class="kpi-info">
-              <h3>Estudios Activos</h3>
-              <div class="kpi-value" id="kpi-active">0</div>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon-wrapper kpi-icon-purple">CRO</div>
-            <div class="kpi-info">
-              <h3>Sponsors / CROs</h3>
-              <div class="kpi-value" id="kpi-sponsors">0</div>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon-wrapper kpi-icon-amber">ESP</div>
-            <div class="kpi-info">
-              <h3>Especialidades</h3>
-              <div class="kpi-value" id="kpi-specialties">0</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Expanded Statistics Panel (Hidden by default) -->
-        <section class="expanded-stats-panel" id="expanded-stats-panel">
-          <div class="expanded-header">
-            Estadísticas Expandidas: <span id="expanded-specialty-name">Ninguna</span>
-          </div>
-          <div class="expanded-grid">
-            <div class="expanded-item">
-              <h4>Top Patrocinadores en esta Área</h4>
-              <ul class="top-list" id="expanded-top-sponsors">
-                <li><span>Ninguno</span><span>0</span></li>
-              </ul>
-            </div>
-
-            <div class="expanded-item">
-              <h4>Fases Clínicas</h4>
-              <ul class="top-list" id="expanded-top-phases">
-                <li><span>Ninguno</span><span>0</span></li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Charts Grid -->
-        <section class="charts-grid">
-          <div class="chart-card">
-            <div class="chart-header">
-              <h3>Distribución por Estado Operativo</h3>
-            </div>
-            <div class="chart-container">
-              <canvas id="chart-status"></canvas>
-            </div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-header">
-              <h3>Distribución por Fase</h3>
-            </div>
-            <div class="chart-container">
-              <canvas id="chart-phase"></canvas>
-            </div>
-          </div>
-          <div class="chart-card chart-wide">
-            <div class="chart-header">
-              <h3 id="chart-specialties-title">Especialidades Médicas</h3>
-            </div>
-            <div class="chart-container">
-              <canvas id="chart-specialties"></canvas>
-            </div>
-          </div>
-          <div class="chart-card chart-wide">
-            <div class="chart-header">
-              <h3>Top 10 Patrocinadores</h3>
-            </div>
-            <div class="chart-container">
-              <canvas id="chart-sponsors"></canvas>
-            </div>
-          </div>
-          
-          <div class="chart-card">
-            <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <div>
-                <h3>Países de Reclutamiento</h3>
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Distribución y densidad por territorio</p>
-              </div>
-              <div class="badge-counter" id="countries-count-badge" style="font-size: 0.75rem; padding: 3px 10px;">0 Países</div>
-            </div>
-            <div class="countries-table-wrapper">
-              <table class="countries-table">
-                <thead>
-                  <tr>
-                    <th style="width: 35px; text-align: center;">#</th>
-                    <th>País de Reclutamiento</th>
-                    <th style="text-align: right; width: 85px;">Estudios</th>
-                    <th style="text-align: right; width: 75px;">% Total</th>
-                    <th style="width: 110px;">Distribución</th>
-                  </tr>
-                </thead>
-                <tbody id="global-countries-body">
-                  <tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">Cargando distribución por país...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </section>
-
-        <!-- Data Table Section -->
-        <section class="table-section">
-          <div class="table-header-controls">
-            <div class="table-title">
-              <h3 id="table-header-title">Tabla de Estudios y Desglose</h3>
-              <p>Haz clic en cualquier fila para inspeccionar las variables normativas.</p>
-            </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <label style="font-size: 0.85rem; color: var(--text-muted);">Filas por página:</label>
-              <select id="select-page-size" class="filter-control" style="width: auto;">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100" selected>100</option>
-                <option value="250">250</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="data-table" id="studies-table">
-              <thead>
-                <tr>
-                  <th data-sort="radicado">Radicado / ID</th>
-                  <th data-sort="fecha_radicacion">Fecha / Año</th>
-                  <th data-sort="titulo">Nombre del Estudio</th>
-                  <th data-sort="patrocinador_cro">Patrocinador / CRO</th>
-                  <th data-sort="especialidades">Especialidad</th>
-                  <th data-sort="fase_tabla" style="min-width: 120px; white-space: nowrap;">Fase</th>
-                  <th data-sort="estado_operativo">Estado</th>
-                  <th style="text-align: center;">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="table-body">
-                <!-- Dynamic rows -->
-              </tbody>
-            </table>
-          </div>
-          
-          <div class="pagination-bar">
-            <div class="pagination-info" id="pagination-text">Mostrando 0 - 0 de 0</div>
-            <div class="pagination-buttons" id="pagination-buttons">
-              <!-- Page numbers -->
-            </div>
-          </div>
-        </section>
-
-      </main>
-    </div> <!-- End Main Content -->
-
-  </div> <!-- End App Container -->
-
-  <!-- 13 Regulatory Variables Modal -->
-  <div class="modal-overlay" id="detail-modal">
-    <div class="modal-drawer">
-      <div class="modal-header">
-        <div>
-          <span class="badge-fase" id="modal-fase-badge" style="margin-bottom: 8px; display: inline-block;">Fase -</span>
-          <h2 id="modal-study-title">Título del Estudio</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">ID Protocolo: <span id="modal-radicado-text" style="color: var(--accent-primary); font-weight: 600;">-</span></p>
-        </div>
-        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="variable-section-title" id="modal-section-title">
-          Desglose Exhaustivo de Variables
-        </div>
-        <div class="variables-grid">
-          <div class="variable-card">
-            <div class="variable-label">1. Radicado / Protocolo</div>
-            <div class="variable-value" id="var-radicado">-</div>
-          </div>
-          <div class="variable-card full-width">
-            <div class="variable-label">2. Título Completo</div>
-            <div class="variable-value" id="var-titulo">-</div>
-          </div>
-          <div class="variable-card full-width">
-            <div class="variable-label">3. Acta / Disposición</div>
-            <div class="variable-value" id="var-acta">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">4. Estado Operativo</div>
-            <div class="variable-value" id="var-estado-operativo">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">5. Concepto Regulatorio</div>
-            <div class="variable-value" id="var-concepto-regulatorio">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">6. Número Acto Administrativo</div>
-            <div class="variable-value" id="var-acto-admin">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">7. Fecha de Radicación / Inicio</div>
-            <div class="variable-value" id="var-fecha-radicacion">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">8. Fecha de Acto</div>
-            <div class="variable-value" id="var-fecha-acto">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">9. Especialidades Médicas</div>
-            <div class="variable-value" id="var-especialidades">-</div>
-          </div>
-          <div class="variable-card full-width">
-            <div class="variable-label">10. Patrocinador / CRO</div>
-            <div class="variable-value" id="var-patrocinador">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">11. ID Registro Primario</div>
-            <div class="variable-value" id="var-nct-id">-</div>
-          </div>
-          <div class="variable-card">
-            <div class="variable-label">12. Enlace Registro</div>
-            <div class="variable-value" id="var-enlace-registro">-</div>
-          </div>
-          <div class="variable-card full-width">
-            <div class="variable-label">13. Palabras Clave</div>
-            <div class="variable-value" id="var-palabra-clave">-</div>
-          </div>
-        </div>
-
-        <div style="margin-top: 16px; padding: 14px; background: #f0f9ff; border-radius: var(--radius-sm); border: 1px solid #bae6fd;">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Enlace a Ficha Oficial:</div>
-          <div id="var-official-url" style="margin-top: 4px; font-weight: 600;">-</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</body>
+			<!-- SplashScreen -->
+			<div
+				aria-disabled
+				id="__evidence_project_splash"
+				data-test-id="__evidence_project_splash"
+				style="visibility: hidden"
+			>
+				<svg width="100" height="100" viewBox="-8 -8 588 588" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M7.19462e-05 74.3583C109.309 74.3583 195.795 86.2578 286.834 37.825C377.872 -10.6077 466.416 1.29174 573.667 1.29175L573.667 126.549C466.416 126.549 377.373 114.91 286.834 163.082C196.294 211.254 109.309 199.615 6.11417e-05 199.615L7.19462e-05 74.3583Z"
+						class="draw-path"
+					/>
+					<path
+						d="M573.669 499.31C464.36 499.31 377.874 487.411 286.835 535.843C195.797 584.276 107.252 572.377 0.0014801 572.377V447.12C107.252 447.12 196.295 458.758 286.835 410.586C377.375 362.415 464.36 374.053 573.669 374.053V499.31Z"
+						class="draw-path"
+					/>
+					<path
+						d="M452.896 186.499C395.028 187.686 341.581 194.947 286.835 224.074C211.396 264.212 136.995 262.826 52.2355 261.247C35.2696 260.931 17.8887 260.608 0.0014801 260.608V385.865C18.1032 385.865 35.6721 386.204 52.81 386.534C137.212 388.162 211.162 389.589 286.835 349.331C341.838 320.07 395.18 312.831 452.896 311.685V186.499Z"
+						class="draw-path"
+					/>
+				</svg>
+			</div>
+		</div>
+	</body>
 </html>
+
+<style>
+	#__evidence_project_splash {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: #ffffff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 9999;
+	}
+
+	[data-theme='dark'] #__evidence_project_splash {
+		background-color: #000000;
+	}
+
+	.draw-path {
+		fill: #000000;
+		animation: blinking-logo 2s;
+		animation-fill-mode: both;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+	}
+
+	[data-theme='dark'] .draw-path {
+		fill: #ffffff;
+	}
+
+	@keyframes blinking-logo {
+		0% {
+			fill-opacity: 1;
+		}
+		50% {
+			fill-opacity: 0.2;
+		}
+		100% {
+			fill-opacity: 1;
+		}
+	}
+</style>
