@@ -149,43 +149,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Fetch Dataset On-Demand (DuckDB WASM Parquet Engine)
+  // Fetch Dataset On-Demand with RAM Caching (0ms Tab Switching)
   async function ensureRegistryLoaded(regKey) {
     const reg = registryMap[regKey];
     if (!reg) return [];
 
+    // Instant RAM Cache Return: Zero Overlay, Zero Network Delay
     if (reg.data && Array.isArray(reg.data) && reg.data.length > 0) {
       return reg.data;
     }
 
-    showLoading(`Cargando ${reg.name}...`, `Procesando estudios clínicos con DuckDB Engine`);
+    showLoading(`Cargando ${reg.name}...`, `Procesando registros de estudios clínicos`);
 
-    // Try DuckDB WASM Parquet query first if Engine is ready
-    if (isDuckDBReady && duckdbConn && reg.parquet) {
-      try {
-        const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const parquetUrl = isLocal ? `data/${reg.parquet}` : `${CDN_BASE_URL}${reg.parquet}`;
-        
-        const res = await duckdbConn.query(`SELECT * FROM read_parquet('${parquetUrl}')`);
-        reg.data = res.toArray().map(row => row.toJSON());
-        console.log(`[DuckDB WASM] Carga exitosa de ${reg.parquet}: ${reg.data.length} registros.`);
-        hideLoading();
-        return reg.data;
-      } catch (parquetErr) {
-        console.warn(`[DuckDB WASM] Falló consulta Parquet para ${reg.parquet}, derivando a JSON:`, parquetErr);
-      }
-    }
-
-    // Fallback: Direct JSON Loader
     try {
       const firstChunk = await fetchJsonFile(reg.files[0]);
       reg.data = [...firstChunk];
       hideLoading();
 
+      // Progressive Background Streaming for Multi-part Datasets
       if (reg.files.length > 1) {
         (async () => {
           for (let i = 1; i < reg.files.length; i++) {
-            await new Promise(resolve => setTimeout(resolve, 80));
+            await new Promise(resolve => setTimeout(resolve, 50));
             try {
               const nextChunk = await fetchJsonFile(reg.files[i]);
               reg.data = reg.data.concat(nextChunk);
