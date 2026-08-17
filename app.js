@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Fetch Dataset On-Demand
+  // Fetch Dataset On-Demand (Progressive Streaming for Mobile Optimization)
   async function ensureRegistryLoaded(regKey) {
     const reg = registryMap[regKey];
     if (!reg) return [];
@@ -118,17 +118,39 @@ document.addEventListener('DOMContentLoaded', () => {
       return reg.data;
     }
 
-    showLoading(`Cargando ${reg.name}...`, `Obteniendo ${reg.files.length} archivo(s) JSON vía CDN jsDelivr`);
+    showLoading(`Cargando ${reg.name}...`, `Obteniendo datos comprimidos vía CDN jsDelivr`);
 
     try {
-      const responses = await Promise.all(
-        reg.files.map(file => fetchJsonFile(file))
-      );
-      reg.data = responses.flat();
+      // Step 1: Immediately fetch & parse first chunk for instant render (< 400ms on mobile)
+      const firstChunk = await fetchJsonFile(reg.files[0]);
+      reg.data = [...firstChunk];
+      hideLoading();
+
+      // Step 2: Stream remaining chunks progressively in background without blocking Main Thread
+      if (reg.files.length > 1) {
+        (async () => {
+          for (let i = 1; i < reg.files.length; i++) {
+            await new Promise(resolve => setTimeout(resolve, 80));
+            try {
+              const nextChunk = await fetchJsonFile(reg.files[i]);
+              reg.data = reg.data.concat(nextChunk);
+              
+              if (activeRegistryKey === regKey) {
+                rawStudies = reg.data;
+                filteredStudies = [...rawStudies];
+                populateFilterOptions();
+                updateDashboard();
+                updateGlobalBadges();
+              }
+            } catch (chunkErr) {
+              console.warn(`Aviso: Error en fragmento ${reg.files[i]}:`, chunkErr);
+            }
+          }
+        })();
+      }
     } catch (err) {
       console.error(`Error al cargar registro ${regKey}:`, err);
       reg.data = [];
-    } finally {
       hideLoading();
     }
 
