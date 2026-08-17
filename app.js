@@ -2,64 +2,123 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Registry Dataset Mapping
+  // Registry Dataset Mapping (Lazy JSON Loader)
   const registryMap = {
     invima: {
       name: 'INVIMA Colombia',
       subtitle: 'Instituto Nacional de Vigilancia de Medicamentos y Alimentos (Colombia)',
-      data: window.INVIMA_DATASET || []
+      files: ['invima_estudios_clinicos.json'],
+      data: null
     },
     clinicaltrials: {
       name: 'ClinicalTrials.gov',
       subtitle: 'National Institutes of Health / NLM (EEUU & Global)',
-      data: window.CLINICALTRIALS_GOV_DATASET || []
+      files: ['clinicaltrials_gov.json'],
+      data: null
     },
     euctr: {
       name: 'EU Clinical Trials',
       subtitle: 'European Medicines Agency / EudraCT (Unión Europea)',
-      data: window.EU_CLINICALTRIALS_DATASET || []
+      files: ['eu_clinicaltrials.json'],
+      data: null
     },
     anvisa: {
       name: 'ANVISA Brasil',
       subtitle: 'Agência Nacional de Vigilância Sanitária (Brasil)',
-      data: window.ANVISA_BRASIL_DATASET || []
+      files: ['anvisa_brasil.json'],
+      data: null
     },
     cofepris: {
       name: 'COFEPRIS México',
       subtitle: 'Comisión Federal para la Protección contra Riesgos Sanitarios (México)',
-      data: window.COFEPRIS_MEXICO_DATASET || []
+      files: ['cofepris_mexico.json'],
+      data: null
     },
     paho: {
       name: 'OPS / PAHO Américas',
       subtitle: 'Portal de Ensayos Clínicos de las Américas (OPS / OMS ICTRP)',
-      data: window.PAHO_AMERICAS_DATASET || []
+      files: ['paho_americas.json'],
+      data: null
     },
     rec_gaico: {
       name: 'REC GAICO',
       subtitle: 'Registro de Ensayos Clínicos en Oncología y Salud (ANMAT / REC)',
-      data: window.REC_GAICO_DATASET || []
+      files: ['rec_gaico.json'],
+      data: null
     },
     anmat: {
       name: 'ANMAT Argentina',
       subtitle: 'Base de Datos de Estudios de Farmacología Clínica',
-      data: window.ANMAT_ARGENTINA_DATASET || []
+      files: ['anmat_argentina.json'],
+      data: null
     },
     oms: {
       name: 'OMS Global',
       subtitle: 'Base de datos ICTRP (>=2012)',
-      data: [
-        ...(window.OMS_PART1 || []),
-        ...(window.OMS_PART2 || []),
-        ...(window.OMS_PART3 || []),
-        ...(window.OMS_PART4 || [])
-      ]
+      files: ['oms_part1.json', 'oms_part2.json', 'oms_part3.json', 'oms_part4.json'],
+      data: null
     }
   };
 
   // Active State
   let activeRegistryKey = 'invima';
-  let rawStudies = registryMap.invima.data;
-  let filteredStudies = [...rawStudies];
+  let rawStudies = [];
+  let filteredStudies = [];
+
+  // Loading Overlay DOM Helper
+  let loadingOverlay = document.querySelector('.data-loading-overlay');
+  if (!loadingOverlay) {
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'data-loading-overlay';
+    loadingOverlay.innerHTML = `
+      <div class="loading-spinner"></div>
+      <div class="loading-title" id="loading-title">Cargando Registro...</div>
+      <div class="loading-subtitle" id="loading-subtitle">Descargando datos estructurados JSON</div>
+    `;
+    document.body.appendChild(loadingOverlay);
+  }
+
+  function showLoading(title, subtitle) {
+    const t = document.getElementById('loading-title');
+    const s = document.getElementById('loading-subtitle');
+    if (t) t.textContent = title;
+    if (s) s.textContent = subtitle;
+    loadingOverlay.classList.add('active');
+  }
+
+  function hideLoading() {
+    loadingOverlay.classList.remove('active');
+  }
+
+  // Fetch Dataset On-Demand
+  async function ensureRegistryLoaded(regKey) {
+    const reg = registryMap[regKey];
+    if (!reg) return [];
+
+    if (reg.data && Array.isArray(reg.data) && reg.data.length > 0) {
+      return reg.data;
+    }
+
+    showLoading(`Cargando ${reg.name}...`, `Obteniendo ${reg.files.length} archivo(s) JSON (${reg.subtitle})`);
+
+    try {
+      const responses = await Promise.all(
+        reg.files.map(async file => {
+          const res = await fetch(file);
+          if (!res.ok) throw new Error(`HTTP ${res.status} al cargar ${file}`);
+          return await res.json();
+        })
+      );
+      reg.data = responses.flat();
+    } catch (err) {
+      console.error(`Error al cargar registro ${regKey}:`, err);
+      reg.data = [];
+    } finally {
+      hideLoading();
+    }
+
+    return reg.data;
+  }
 
   // Pagination & Sorting State
   let currentPage = 1;
@@ -117,8 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegistryData();
   setupEventListeners();
 
-  function initRegistryData() {
-    rawStudies = registryMap[activeRegistryKey].data || [];
+  async function initRegistryData() {
+    rawStudies = await ensureRegistryLoaded(activeRegistryKey);
     filteredStudies = [...rawStudies];
 
     // Reset Filters to 'all' and clear search
@@ -146,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Multi-Registry Tab Handler
   registryTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
+    tab.addEventListener('click', async () => {
       const regKey = tab.getAttribute('data-registry');
       if (regKey && regKey !== activeRegistryKey) {
         registryTabs.forEach(t => t.classList.remove('active'));
@@ -157,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Preserve global search query when switching tabs
         const currentQuery = searchInput.value;
-        initRegistryData();
+        await initRegistryData();
         searchInput.value = currentQuery;
         if (currentQuery) {
           applyFilters();
@@ -170,9 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const q = query.toLowerCase().trim();
     registryTabs.forEach(tab => {
       const regKey = tab.getAttribute('data-registry');
-      const regData = registryMap[regKey]?.data || [];
+      const regData = registryMap[regKey]?.data || null;
       const badge = tab.querySelector('.registry-tab-badge');
       if (!badge) return;
+
+      if (!regData) {
+        // Show count from loaded data if active or default count
+        if (regKey === activeRegistryKey && rawStudies.length > 0) {
+          badge.textContent = rawStudies.length.toLocaleString();
+        }
+        return;
+      }
 
       if (!q) {
         badge.textContent = regData.length.toLocaleString();
